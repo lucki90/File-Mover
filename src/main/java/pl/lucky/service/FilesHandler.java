@@ -1,35 +1,55 @@
 package pl.lucky.service;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.usermodel.*;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
-import javafx.scene.control.TextArea;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.List;
 
+import javafx.scene.control.TextArea;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.*;
+
+/**
+ * Supports file operations.
+ */
 public class FilesHandler {
 
-    public void takeFilesNameAndMoveFiles(String sourceXlsx, String from, String to,
-                                          String fileExtension, TextArea stackTraceArea) {
+    /**
+     * Method that invoke method getFileListFromExcel and moveFiles.
+     * @param excelPath path to a file that contains a list of files to move
+     * @param sourceCatalogPath catalog from which the files will be moved
+     * @param destinyCatalogPath catalog to which the files will be moved
+     * @param filesExtension extension of files that will be moved
+     * @param stackTraceArea field in GUI in which stacktrace will be displayed
+     */
+    public void takeFilesNameAndMoveFiles(final String excelPath, final String sourceCatalogPath,
+                                          final String destinyCatalogPath, final String filesExtension,
+                                          final TextArea stackTraceArea) {
         List<String> fileNames = new ArrayList<>();
         try {
-            getFileListFromExcel(fileNames, fileExtension, sourceXlsx);
+            getFileListFromExcel(fileNames, filesExtension, excelPath);
         } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
         }
-        moveFiles(fileNames, from, to, stackTraceArea);
+        moveFiles(fileNames, sourceCatalogPath, destinyCatalogPath, stackTraceArea);
     }
 
-    private void getFileListFromExcel(List<String> fileNames, String filesExtension, String excelPath) throws IOException, InvalidFormatException {
+    /**
+     * Opens the excel file and takes the file names to be moved.
+     * @param fileNames list of files that will be moved
+     * @param filesExtension extension of files that will be moved
+     * @param excelPath path to a file that contains a list of files to move
+     * @throws IOException Signals that an I/O exception of some sort has occurred
+     * @throws InvalidFormatException will be throw if format of excelPath will not be xlsx
+     */
+    private void getFileListFromExcel(final List<String> fileNames, final String filesExtension,
+                                      final String excelPath) throws IOException, InvalidFormatException {
         InputStream input = new FileInputStream(excelPath);
         int rowNumber = 0;
         Workbook workbook = WorkbookFactory.create(input);
@@ -51,7 +71,14 @@ public class FilesHandler {
         input.close();
     }
 
-    private void moveFiles(List<String> fileNames, String sourceCatalogPath, String destinyCatalogPath, TextArea stackTraceArea) {
+    /**
+     * Move files from sourceCatalogPath to destinyCatalogPath and prints logs in stackTraceArea.
+     * @param fileNames list of files that will be moved
+     * @param sourceCatalogPath catalog from which the files will be moved
+     * @param destinyCatalogPath catalog to which the files will be moved
+     * @param stackTraceArea field in GUI in which stacktrace will be displayed
+     */
+    private void moveFiles(final List<String> fileNames, String sourceCatalogPath, String destinyCatalogPath, final TextArea stackTraceArea) {
         StringBuilder stackTrace = new StringBuilder();
         if (!sourceCatalogPath.endsWith("\\")) {
             sourceCatalogPath += "\\";

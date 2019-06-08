@@ -98,6 +98,7 @@ public class GUICreator {
         browserButton.setText(buttonName);
         browserButton.setOnAction(new EventHandler<ActionEvent>() {
             File chooser;
+
             @Override
             public void handle(ActionEvent event) {
                 if (isCatalog) {
