@@ -27,6 +27,7 @@ public class GUICreator {
         grid.setVgap(8);
         grid.setHgap(10);
 
+
         //First row
         Label excelFile = new Label("Excel file: ");
         GridPane.setConstraints(excelFile, 0, 0);
@@ -36,7 +37,7 @@ public class GUICreator {
         GridPane.setConstraints(excelFileInput, 1, 0);
 
         String fileStatement = "Nie wybrano pliku...";
-        Button excelFileBrowser = GUICreator.createButton(stage, excelFileInput, "Find file", fileStatement, false);
+        Button excelFileBrowser = createButton(stage, excelFileInput, "Find file", fileStatement, false);
         GridPane.setConstraints(excelFileBrowser, 2, 0);
         //Second row
         Label sourceCatalog = new Label("Source catalog: ");
@@ -47,7 +48,7 @@ public class GUICreator {
         GridPane.setConstraints(sourceCatalogInput, 1, 1);
 
         String catalogStatement = "Nie wybrano katalogu";
-        Button sourceCatalogBrowser = GUICreator.createButton(stage, sourceCatalogInput, "Find catalog", catalogStatement, true);
+        Button sourceCatalogBrowser = createButton(stage, sourceCatalogInput, "Find catalog", catalogStatement, true);
         GridPane.setConstraints(sourceCatalogBrowser, 2, 1);
 
         //Third row
@@ -58,7 +59,7 @@ public class GUICreator {
         destinyCatalogInput.setPromptText("Catalog path...");
         GridPane.setConstraints(destinyCatalogInput, 1, 2);
 
-        Button destinyCatalogBrowser = GUICreator.createButton(stage, destinyCatalogInput, "Find catalog", catalogStatement, true);
+        Button destinyCatalogBrowser = createButton(stage, destinyCatalogInput, "Find catalog", catalogStatement, true);
         GridPane.setConstraints(destinyCatalogBrowser, 2, 2);
 
         //Forth row
@@ -75,6 +76,7 @@ public class GUICreator {
 
         //Fifth row
         Button launchButton = new Button("Move files!");
+        launchButton.setMinWidth(200);
         launchButton.setOnAction(e -> filesHandler.takeFilesNameAndMoveFiles(
                 excelFileInput.getText(), sourceCatalogInput.getText(),
                 destinyCatalogInput.getText(), filesExtensionInput.getText(), stackTraceArea));
@@ -86,14 +88,14 @@ public class GUICreator {
                 filesExtension, filesExtensionInput,
                 launchButton);
 
-        Scene scene = new Scene(grid, 400, 300);
+        Scene scene = new Scene(grid, 500, 300);
 
         stage.setScene(scene);
         stage.show();
 
     }
 
-    private static Button createButton(Stage stage, TextField inputText, String buttonName, String messageContent, boolean isCatalog) {
+    private Button createButton(Stage stage, TextField inputText, String buttonName, String messageContent, boolean isCatalog) {
         Button browserButton = new Button();
         browserButton.setText(buttonName);
         browserButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -116,6 +118,7 @@ public class GUICreator {
                 }
             }
         });
+        browserButton.setMinWidth(100);
         return browserButton;
     }
 }
