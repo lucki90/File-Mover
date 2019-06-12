@@ -22,11 +22,12 @@ public class FilesHandler {
 
     /**
      * Method that invoke method getFileListFromExcel and moveFiles.
-     * @param excelPath path to a file that contains a list of files to move
-     * @param sourceCatalogPath catalog from which the files will be moved
+     *
+     * @param excelPath          path to a file that contains a list of files to move
+     * @param sourceCatalogPath  catalog from which the files will be moved
      * @param destinyCatalogPath catalog to which the files will be moved
-     * @param filesExtension extension of files that will be moved
-     * @param stackTraceArea field in GUI in which stacktrace will be displayed
+     * @param filesExtension     extension of files that will be moved
+     * @param stackTraceArea     field in GUI in which stacktrace will be displayed
      */
     public void takeFilesNameAndMoveFiles(final String excelPath, final String sourceCatalogPath,
                                           final String destinyCatalogPath, final String filesExtension,
@@ -42,10 +43,11 @@ public class FilesHandler {
 
     /**
      * Opens the excel file and takes the file names to be moved.
-     * @param fileNames list of files that will be moved
+     *
+     * @param fileNames      list of files that will be moved
      * @param filesExtension extension of files that will be moved
-     * @param excelPath path to a file that contains a list of files to move
-     * @throws IOException Signals that an I/O exception of some sort has occurred
+     * @param excelPath      path to a file that contains a list of files to move
+     * @throws IOException            Signals that an I/O exception of some sort has occurred
      * @throws InvalidFormatException will be throw if format of excelPath will not be xlsx
      */
     private void getFileListFromExcel(final List<String> fileNames, final String filesExtension,
@@ -73,12 +75,15 @@ public class FilesHandler {
 
     /**
      * Move files from sourceCatalogPath to destinyCatalogPath and prints logs in stackTraceArea.
-     * @param fileNames list of files that will be moved
-     * @param sourceCatalogPath catalog from which the files will be moved
+     *
+     * @param fileNames          list of files that will be moved
+     * @param sourceCatalogPath  catalog from which the files will be moved
      * @param destinyCatalogPath catalog to which the files will be moved
-     * @param stackTraceArea field in GUI in which stacktrace will be displayed
+     * @param stackTraceArea     field in GUI in which stacktrace will be displayed
      */
     private void moveFiles(final List<String> fileNames, String sourceCatalogPath, String destinyCatalogPath, final TextArea stackTraceArea) {
+        int copiedFiles = 0;
+        int notFindFiles = 0;
         StringBuilder stackTrace = new StringBuilder();
         if (!sourceCatalogPath.endsWith("\\")) {
             sourceCatalogPath += "\\";
@@ -91,11 +96,13 @@ public class FilesHandler {
             Path finalPath = Paths.get(destinyCatalogPath + fileName);
 
             try {
-                Files.move(beginPath, finalPath, StandardCopyOption.REPLACE_EXISTING);
-                stackTrace.append("SUCCESS - File \"")
-                        .append(fileName)
-                        .append("\" moved correctly.\n");
+                Files.copy(beginPath, finalPath, StandardCopyOption.REPLACE_EXISTING);
+//                stackTrace.append("SUCCESS - File \"")
+//                        .append(fileName)
+//                        .append("\" copied correctly.\n");
+                copiedFiles++;
             } catch (IOException e) {
+                notFindFiles++;
                 stackTrace.append("FAILURE! - File \"")
                         .append(fileName)
                         .append("\" does not exist in the catalog \"")
@@ -103,6 +110,12 @@ public class FilesHandler {
                         .append("\"\n");
             }
         }
+        stackTrace.append("Copy completed. Copied files: ")
+                .append(copiedFiles)
+                .append(", not found files: ")
+                .append(notFindFiles)
+                .append(".\n");
+
         stackTraceArea.setText(stackTrace.toString());
     }
 }

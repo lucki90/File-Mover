@@ -36,7 +36,7 @@ public class GUICreator {
         excelFileInput.setPromptText("Excel file path...");
         GridPane.setConstraints(excelFileInput, 1, 0);
 
-        String fileStatement = "Nie wybrano pliku...";
+        String fileStatement = "No file selected...";
         Button excelFileBrowser = createButton(stage, excelFileInput, "Find file", fileStatement, false);
         GridPane.setConstraints(excelFileBrowser, 2, 0);
         //Second row
@@ -47,7 +47,7 @@ public class GUICreator {
         sourceCatalogInput.setPromptText("Catalog path...");
         GridPane.setConstraints(sourceCatalogInput, 1, 1);
 
-        String catalogStatement = "Nie wybrano katalogu";
+        String catalogStatement = "No catalog selected...";
         Button sourceCatalogBrowser = createButton(stage, sourceCatalogInput, "Find catalog", catalogStatement, true);
         GridPane.setConstraints(sourceCatalogBrowser, 2, 1);
 
@@ -75,7 +75,7 @@ public class GUICreator {
         grid.add(stackTraceArea, 0, 5, 3, 1);
 
         //Fifth row
-        Button launchButton = new Button("Move files!");
+        Button launchButton = new Button("Copy files!");
         launchButton.setMinWidth(200);
         launchButton.setOnAction(e -> filesHandler.takeFilesNameAndMoveFiles(
                 excelFileInput.getText(), sourceCatalogInput.getText(),
@@ -88,7 +88,7 @@ public class GUICreator {
                 filesExtension, filesExtensionInput,
                 launchButton);
 
-        Scene scene = new Scene(grid, 500, 300);
+        Scene scene = new Scene(grid, 450, 300);
 
         stage.setScene(scene);
         stage.show();
